@@ -1,6 +1,6 @@
 import './App.css'
 import {ThemeProvider} from "@/components/theme-provider.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {SpeechIcon, StopCircleIcon} from "lucide-react";
 import SpeechRecognition from "@/lib/SpeechRecognition.ts";
@@ -10,6 +10,10 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const recognizer: SpeechRecognition = SpeechRecognition.getInstance(import.meta.env.VITE_SPEECH_KEY, import.meta.env.VITE_SPEECH_REGION);
 
+
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [displayText]);
 
   let sentenceCount = 0;
   let rollingStartIndex = 0;
