@@ -10,6 +10,20 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const recognizer: SpeechRecognition = SpeechRecognition.getInstance(import.meta.env.VITE_SPEECH_KEY, import.meta.env.VITE_SPEECH_REGION);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        onStopClicked();
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
@@ -24,11 +38,11 @@ function App() {
     setDisplayText('Listening...');
     recognizer.startRecognition(
       onRecognizing,
-      onReciognitionDone
+      onRecognitionDone
     );
   }
 
-  function onReciognitionDone(text: string) {
+  function onRecognitionDone(text: string) {
     if (text.length > 0) {
       sentences[sentenceCount % 3] = text;
       setDisplayText(sentences[rollingStartIndex % 3] + '\n' + sentences[(rollingStartIndex + 1) % 3] + '\n' + sentences[(rollingStartIndex + 2) % 3]);
