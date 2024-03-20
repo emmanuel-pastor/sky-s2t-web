@@ -10,11 +10,12 @@ import TokenResponse from "@/models/TokenResponse.ts";
 import BackendError from "@/models/BackendError.ts";
 import {AppContext} from "@/context/AppContext.ts";
 import {AppPage} from "@/models/AppPage.ts";
+import {Toaster} from "@/components/ui/toaster.tsx";
+import {useToast} from "@/components/ui/use-toast.ts";
 
 function App() {
-  const [showToast, setShowToast] = useState<boolean>(false);
-  const [toastText, setToastText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<AppPage>(AppPage.Home);
+  const {toast} = useToast();
   const [displayText, setDisplayText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
@@ -40,16 +41,11 @@ function App() {
     window.scrollTo(0, document.body.scrollHeight);
   }, [displayText]);
 
-  useEffect(() => {
-    if (showToast) {
-      displayToast(toastText);
-    }
-  }, [showToast, toastText])
-
   const displayToast = (text: string) => {
-    setToastText(text);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 5000);
+    toast({
+      variant: 'destructive',
+      description: text,
+    })
   }
 
   const navigateTo = (page: AppPage) => {
@@ -143,6 +139,7 @@ function App() {
             />
           )}
         </div>
+        <Toaster/>
       </AppContext.Provider>
     </ThemeProvider>
   )
