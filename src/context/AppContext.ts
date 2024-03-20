@@ -1,9 +1,9 @@
 import {createContext} from "react";
-import {AppPage} from "@/models/AppPage.ts";
+import {AppScreen} from "@/models/AppScreen.ts";
 
 export const AppContext = createContext({
   displayToast: (text: string) => {
   },
-  navigateTo: (page: AppPage) => {
+  navigateTo: (screen: AppScreen) => {
   },
 });

@@ -9,12 +9,12 @@ import Cookies from 'js-cookie';
 import TokenResponse from "@/models/TokenResponse.ts";
 import BackendError from "@/models/BackendError.ts";
 import {AppContext} from "@/context/AppContext.ts";
-import {AppPage} from "@/models/AppPage.ts";
+import {AppScreen} from "@/models/AppScreen.ts";
 import {Toaster} from "@/components/ui/toaster.tsx";
 import {useToast} from "@/components/ui/use-toast.ts";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<AppPage>(AppPage.Home);
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>(AppScreen.Home);
   const {toast} = useToast();
   const [displayText, setDisplayText] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -48,8 +48,8 @@ function App() {
     })
   }
 
-  const navigateTo = (page: AppPage) => {
-    setCurrentPage(page);
+  const navigateTo = (page: AppScreen) => {
+    setCurrentScreen(page);
   }
 
   let sentenceCount = 0;

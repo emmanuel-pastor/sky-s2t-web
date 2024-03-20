@@ -1,4 +1,4 @@
-export enum AppPage {
+export enum AppScreen {
   Home,
   Login,
   Speech
