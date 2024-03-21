@@ -34,6 +34,10 @@ class Token {
   storeInCookie(cookieName: string) {
     Cookies.set(cookieName, this.token, {secure: true, expires: this.expirationDate});
   }
+
+  toString(): string {
+    return this.token;
+  }
 }
 
 export default Token;

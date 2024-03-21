@@ -7,6 +7,8 @@ import {useToast} from "@/components/ui/use-toast.ts";
 import LoginScreen from "@/screens/LoginScreen.tsx";
 import SpeechScreen from "@/screens/SpeechScreen.tsx";
 import Token from "@/models/Token.ts";
+import axios from "axios";
+import TokenResponse from "@/models/TokenResponse.ts";
 
 function App() {
   const {toast} = useToast();
@@ -20,7 +22,18 @@ function App() {
       navigateTo(AppScreenEnum.Speech)
     } else {
       if (refreshToken && !refreshToken.isExpired) {
-        // TODO: Refresh the tokens using /accessToken endpoint
+        axios.post<TokenResponse>('http://localhost:7071/api/refreshToken', {}, {
+          headers: {
+            'Authorization': `Bearer ${refreshToken.toString()}`,
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          const newAccessToken = new Token(response.data.accessToken)
+          newAccessToken.storeInCookie('accessToken')
+          const newRefreshToken = new Token(response.data.refreshToken)
+          newRefreshToken.storeInCookie('refreshToken')
+          navigateTo(AppScreenEnum.Speech)
+        })
       } else {
         navigateTo(AppScreenEnum.Login)
       }
@@ -43,7 +56,6 @@ function App() {
       <AppContext.Provider value={{displayToast, navigateTo}}>
         {currentScreen == AppScreenEnum.Login && <LoginScreen/>}
         {currentScreen == AppScreenEnum.Speech && <SpeechScreen/>}
-        <h2>Initialising...</h2>
         <Toaster/>
       </AppContext.Provider>
     </ThemeProvider>
