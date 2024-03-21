@@ -1,8 +1,8 @@
 import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 import axios, {AxiosError} from "axios";
 import TokenResponse from "@/models/TokenResponse.ts";
-import Cookies from "js-cookie";
 import BackendError from "@/models/BackendError.ts";
+import Token from "@/models/Token.ts";
 
 function LoginScreen() {
   async function onGoogleLoginSuccess(credentialResponse: CredentialResponse) {
@@ -14,8 +14,10 @@ function LoginScreen() {
         }
       })
 
-      Cookies.set('refreshToken', response.data.refreshToken, {secure: true});
-      Cookies.set('accessToken', response.data.accessToken, {secure: true});
+      const accessToken = new Token(response.data.accessToken);
+      accessToken.storeInCookie('accessToken');
+      const refreshToken = new Token(response.data.refreshToken);
+      refreshToken.storeInCookie('refreshToken');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Request Failed:', error);

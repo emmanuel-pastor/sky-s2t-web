@@ -20,6 +20,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.331.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.35.0",
     "react": "^18.2.0",

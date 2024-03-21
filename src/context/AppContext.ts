@@ -1,9 +1,9 @@
 import {createContext} from "react";
-import {AppScreen} from "@/models/AppScreen.ts";
+import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
 
 export const AppContext = createContext({
   displayToast: (text: string) => {
   },
-  navigateTo: (screen: AppScreen) => {
+  navigateTo: (screen: AppScreenEnum) => {
   },
 });
