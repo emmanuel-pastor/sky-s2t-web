@@ -7,8 +7,9 @@ import {useToast} from "@/components/ui/use-toast.ts";
 import LoginScreen from "@/screens/LoginScreen.tsx";
 import SpeechScreen from "@/screens/SpeechScreen.tsx";
 import Token from "@/models/Token.ts";
-import axios from "axios";
-import TokenResponse from "@/models/TokenResponse.ts";
+import ApiService from "@/lib/ApiService.ts";
+import {AxiosError} from "axios";
+import BackendError from "@/models/BackendError.ts";
 
 function App() {
   const {toast} = useToast();
@@ -22,17 +23,17 @@ function App() {
       navigateTo(AppScreenEnum.Speech)
     } else {
       if (refreshToken && !refreshToken.isExpired) {
-        axios.post<TokenResponse>('http://localhost:7071/api/refreshToken', {}, {
-          headers: {
-            'Authorization': `Bearer ${refreshToken.toString()}`,
-            'Content-Type': 'application/json'
-          }
-        }).then(response => {
-          const newAccessToken = new Token(response.data.accessToken)
+        ApiService.refreshToken(refreshToken).then(response => {
+          const newAccessToken = new Token(response.accessToken)
           newAccessToken.storeInCookie('accessToken')
-          const newRefreshToken = new Token(response.data.refreshToken)
+          const newRefreshToken = new Token(response.refreshToken)
           newRefreshToken.storeInCookie('refreshToken')
           navigateTo(AppScreenEnum.Speech)
+        }).catch(error => {
+          const backendError = (error as AxiosError<BackendError>).response?.data;
+          console.error('Token Refresh Failed:', backendError)
+          displayToast('Session expired. Please login again.')
+          navigateTo(AppScreenEnum.Login)
         })
       } else {
         navigateTo(AppScreenEnum.Login)
