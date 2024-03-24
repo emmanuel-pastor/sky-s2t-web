@@ -8,7 +8,7 @@ import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
 
 function SpeechScreen() {
   const {navigateTo} = useContext(AppContext);
-  const [displayText, setDisplayText] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+  const [displayText, setDisplayText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [recognizer, setRecognizer] = useState<SpeechRecognition | null>(null);
   const displayTextRef = useRef<HTMLDivElement | null>(null);

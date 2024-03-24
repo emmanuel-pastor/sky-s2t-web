@@ -49,6 +49,7 @@ function App() {
     toast({
       variant: 'destructive',
       description: text,
+      duration: 5000,
     })
   }
 
@@ -61,7 +62,11 @@ function App() {
       <AppContext.Provider value={{displayToast, navigateTo}}>
         {currentScreen == AppScreenEnum.Login && <LoginScreen/>}
         {currentScreen == AppScreenEnum.Speech && <SpeechScreen/>}
-        {currentScreen == AppScreenEnum.Home && <LoadingSpinner/>}
+        {currentScreen == AppScreenEnum.Home &&
+            <div className="absolute inset-0 grid place-content-center">
+                <LoadingSpinner/>
+            </div>
+        }
         <Toaster/>
       </AppContext.Provider>
     </ThemeProvider>
