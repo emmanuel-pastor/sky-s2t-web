@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import SpeechRecognition from "@/lib/SpeechRecognition.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {SpeechIcon, StopCircleIcon} from "lucide-react";
@@ -8,9 +8,10 @@ import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
 
 function SpeechScreen() {
   const {navigateTo} = useContext(AppContext);
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
   const [isListening, setIsListening] = useState(false);
   const [recognizer, setRecognizer] = useState<SpeechRecognition | null>(null);
+  const displayTextRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const accessToken = Token.fromCookie('accessToken')?.toString();
@@ -39,7 +40,9 @@ function SpeechScreen() {
 
   // Scrolls to the bottom of the screen when the displayText changes
   useEffect(() => {
-    window.scrollTo(0, document.body.scrollHeight);
+    if (displayTextRef.current) {
+      displayTextRef.current.scrollTop = displayTextRef.current.scrollHeight;
+    }
   }, [displayText]);
 
   let sentenceCount = 0;
@@ -79,20 +82,26 @@ function SpeechScreen() {
   }
 
   return (
-    <div className="row  max-w-6xl">
-      {isListening ?
-        <Button onClick={onStopClicked}>
-          <StopCircleIcon className="mr-2 h-4 w-4"/> Stop
-        </Button>
-        :
-        <Button onClick={onStartClicked}>
-          <SpeechIcon className="mr-2 h-4 w-4"/> Start
-        </Button>
-      }
-      <div className="mt-8 text-3xl text-left leading-snug">
-        {displayText}
+    <>
+      <div className="fixed bottom-0 inset-x-0 flex flex-col h-full w-full">
+        <div
+          ref={displayTextRef}
+          className="flex-grow m-auto w-full p-2 text-3xl text-left leading-snug max-w-6xl overflow-auto">
+          {displayText}
+        </div>
+        <div className="flex items-center justify-center py-4 border-t-2 border-gray-500">
+          {isListening ?
+            <Button onClick={onStopClicked}>
+              <StopCircleIcon className="mr-2 h-4 w-4"/> Stop
+            </Button>
+            :
+            <Button onClick={onStartClicked}>
+              <SpeechIcon className="mr-2 h-4 w-4"/> Start
+            </Button>
+          }
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
