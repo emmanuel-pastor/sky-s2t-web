@@ -30,7 +30,6 @@ class SpeechRecognition {
 
   stopRecognition() {
     this.speechRecognizer?.stopContinuousRecognitionAsync();
-    console.log("Speech recognition stopped.");
   }
 
   private recognizeFromMicrophone(speechConfig: speechsdk.SpeechConfig) {
@@ -50,18 +49,15 @@ class SpeechRecognition {
 
     this.speechRecognizer.recognizing = (_s, e) => {
       const text = e.result.text;
-      console.log(`RECOGNIZING: Text=${text}`);
       this.onRecognizing(text);
     };
 
     this.speechRecognizer.recognized = (_s, e) => {
       const text = e.result.text;
-      console.log(`RECOGNIZED: Text=${text}`);
       this.onRecognitionDone(text);
     };
 
     this.speechRecognizer.startContinuousRecognitionAsync();
-    console.log("Speak into your microphone.");
   }
 }
 
