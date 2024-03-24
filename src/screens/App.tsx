@@ -10,6 +10,7 @@ import Token from "@/models/Token.ts";
 import ApiService from "@/lib/ApiService.ts";
 import {AxiosError} from "axios";
 import BackendError from "@/models/BackendError.ts";
+import ErrorMessageService from "@/lib/ErrorMessageService.ts";
 
 function App() {
   const {toast} = useToast();
@@ -31,8 +32,8 @@ function App() {
           navigateTo(AppScreenEnum.Speech)
         }).catch(error => {
           const backendError = (error as AxiosError<BackendError>).response?.data;
-          console.error('Token Refresh Failed:', backendError)
-          displayToast('Session expired. Please login again.')
+          const errorMessage = ErrorMessageService.getErrorMessage(backendError);
+          displayToast(errorMessage);
           navigateTo(AppScreenEnum.Login)
         })
       } else {
