@@ -1,12 +1,25 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import SpeechRecognition from "@/lib/SpeechRecognition.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {SpeechIcon, StopCircleIcon} from "lucide-react";
+import Token from "@/models/Token.ts";
+import {AppContext} from "@/context/AppContext.ts";
+import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
 
 function SpeechScreen() {
+  const {navigateTo} = useContext(AppContext);
   const [displayText, setDisplayText] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const recognizer: SpeechRecognition = SpeechRecognition.getInstance(import.meta.env.VITE_SPEECH_KEY, import.meta.env.VITE_SPEECH_REGION);
+  const [recognizer, setRecognizer] = useState<SpeechRecognition | null>(null);
+
+  useEffect(() => {
+    const accessToken = Token.fromCookie('accessToken')?.toString();
+    if (accessToken) {
+      setRecognizer(SpeechRecognition.getInstance(accessToken, import.meta.env.VITE_SPEECH_REGION));
+    } else {
+      navigateTo(AppScreenEnum.Home);
+    }
+  }, [navigateTo]);
 
   // Stops the recognition when the tab is hidden
   useEffect(() => {
@@ -36,7 +49,7 @@ function SpeechScreen() {
   function onStartClicked() {
     setIsListening(true);
     setDisplayText('Listening...');
-    recognizer.startRecognition(
+    recognizer?.startRecognition(
       onRecognizing,
       onRecognitionDone
     );
@@ -62,7 +75,7 @@ function SpeechScreen() {
 
   function onStopClicked() {
     setIsListening(false);
-    recognizer.stopRecognition();
+    recognizer?.stopRecognition();
   }
 
   return (

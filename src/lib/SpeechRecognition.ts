@@ -2,14 +2,14 @@ import * as speechsdk from "microsoft-cognitiveservices-speech-sdk";
 
 class SpeechRecognition {
   private static instance: SpeechRecognition;
-  private readonly speechKey: string;
+  private readonly speechToken: string;
   private readonly speechRegion: string;
   private onRecognizing: (text: string) => void = () => {};
   private onRecognitionDone: (text: string) => void = () => {};
   private speechRecognizer?: speechsdk.SpeechRecognizer;
 
   private constructor(speechKey: string, speechRegion: string) {
-    this.speechKey = speechKey;
+    this.speechToken = speechKey;
     this.speechRegion = speechRegion;
   }
 
@@ -23,7 +23,7 @@ class SpeechRecognition {
   startRecognition(onRecognizing: (text: string) => void, onRecognitionDone: (text: string) => void) {
     this.onRecognizing = onRecognizing;
     this.onRecognitionDone = onRecognitionDone;
-    const speechConfig = speechsdk.SpeechConfig.fromSubscription(this.speechKey, this.speechRegion);
+    const speechConfig = speechsdk.SpeechConfig.fromAuthorizationToken(this.speechToken, this.speechRegion);
     speechConfig.speechRecognitionLanguage = "fr-FR";
     this.recognizeFromMicrophone(speechConfig);
   }

@@ -18,6 +18,8 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState<AppScreenEnum>(AppScreenEnum.Home);
 
   useEffect(() => {
+    if (currentScreen !== AppScreenEnum.Home) return;
+
     const accessToken = Token.fromCookie('accessToken');
     const refreshToken = Token.fromCookie('refreshToken');
 
@@ -41,7 +43,7 @@ function App() {
         navigateTo(AppScreenEnum.Login)
       }
     }
-  }, [])
+  }, [currentScreen])
 
   const displayToast = (text: string) => {
     toast({
