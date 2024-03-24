@@ -41,7 +41,7 @@ function LoginScreen() {
   }
 
   return (
-    <>
+    <div className="absolute inset-0 grid place-content-center">
       {isLoading ?
         <LoadingSpinner/>
         :
@@ -53,7 +53,7 @@ function LoginScreen() {
           onError={onGoogleLoginError}
         />
       }
-    </>
+    </div>
   );
 }
 
