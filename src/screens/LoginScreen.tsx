@@ -3,16 +3,19 @@ import {AxiosError} from "axios";
 import BackendError from "@/models/BackendError.ts";
 import Token from "@/models/Token.ts";
 import {AppContext} from "@/context/AppContext.ts";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
 import ApiService from "@/lib/ApiService.ts";
 import ErrorMessageService from "@/lib/ErrorMessageService.ts";
 import {BackendErrorCodeEnum} from "@/models/BackendErrorCode.enum.ts";
+import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
 
 function LoginScreen() {
   const {navigateTo, displayToast} = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onGoogleLoginSuccess(credentialResponse: CredentialResponse) {
+    setIsLoading(true);
     ApiService.login(credentialResponse.credential!).then(response => {
       const accessToken = new Token(response.accessToken);
       accessToken.storeInCookie('accessToken');
@@ -23,6 +26,8 @@ function LoginScreen() {
       const backendError = (error as AxiosError<BackendError>).response?.data;
       const errorMessage = ErrorMessageService.getErrorMessage(backendError);
       displayToast(errorMessage);
+    }).finally(() => {
+      setIsLoading(false);
     });
   }
 
@@ -37,13 +42,17 @@ function LoginScreen() {
 
   return (
     <>
-      <GoogleLogin
-        shape={"pill"}
-        theme="filled_blue"
-        use_fedcm_for_prompt={true}
-        onSuccess={onGoogleLoginSuccess}
-        onError={onGoogleLoginError}
-      />
+      {isLoading ?
+        <LoadingSpinner/>
+        :
+        <GoogleLogin
+          shape={"pill"}
+          theme="filled_blue"
+          use_fedcm_for_prompt={true}
+          onSuccess={onGoogleLoginSuccess}
+          onError={onGoogleLoginError}
+        />
+      }
     </>
   );
 }

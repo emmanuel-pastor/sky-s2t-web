@@ -11,6 +11,7 @@ import ApiService from "@/lib/ApiService.ts";
 import {AxiosError} from "axios";
 import BackendError from "@/models/BackendError.ts";
 import ErrorMessageService from "@/lib/ErrorMessageService.ts";
+import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
 
 function App() {
   const {toast} = useToast();
@@ -58,6 +59,7 @@ function App() {
       <AppContext.Provider value={{displayToast, navigateTo}}>
         {currentScreen == AppScreenEnum.Login && <LoginScreen/>}
         {currentScreen == AppScreenEnum.Speech && <SpeechScreen/>}
+        {currentScreen == AppScreenEnum.Home && <LoadingSpinner/>}
         <Toaster/>
       </AppContext.Provider>
     </ThemeProvider>
