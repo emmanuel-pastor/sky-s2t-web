@@ -2,11 +2,14 @@ import axios from "axios";
 import TokenResponse from "@/models/TokenResponse.ts";
 import Token from "@/models/Token.ts";
 
-const baseUrl = 'http://localhost:7071/api';
+const baseUrl = 'https://sky-s2t-auth.azurewebsites.net/api';
 const client = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json'
+  },
+  params: {
+    'code': import.meta.env.VITE_API_KEY
   }
 });
 
