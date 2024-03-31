@@ -5,9 +5,11 @@ import {SpeechIcon, StopCircleIcon} from "lucide-react";
 import Token from "@/models/Token.ts";
 import {AppContext} from "@/context/AppContext.ts";
 import {AppScreenEnum} from "@/models/AppScreen.enum.ts";
+import {useTranslation} from "react-i18next";
 
 function SpeechScreen() {
   const {navigateTo} = useContext(AppContext);
+  const {t} = useTranslation();
   const [displayText, setDisplayText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [recognizer, setRecognizer] = useState<SpeechRecognition | null>(null);
@@ -51,7 +53,7 @@ function SpeechScreen() {
 
   function onStartClicked() {
     setIsListening(true);
-    setDisplayText('Listening...');
+    setDisplayText(t("listening"));
     recognizer?.startRecognition(
       onRecognizing,
       onRecognitionDone
@@ -92,11 +94,11 @@ function SpeechScreen() {
         <div className="flex items-center justify-center py-4 border-t-2 border-gray-500">
           {isListening ?
             <Button onClick={onStopClicked}>
-              <StopCircleIcon className="mr-2 h-4 w-4"/> Stop
+              <StopCircleIcon className="mr-2 h-4 w-4"/> {t('stop')}
             </Button>
             :
             <Button onClick={onStartClicked}>
-              <SpeechIcon className="mr-2 h-4 w-4"/> Start
+              <SpeechIcon className="mr-2 h-4 w-4"/> {t('start')}
             </Button>
           }
         </div>

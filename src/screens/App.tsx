@@ -12,8 +12,10 @@ import {AxiosError} from "axios";
 import BackendError from "@/models/BackendError.ts";
 import ErrorMessageService from "@/lib/ErrorMessageService.ts";
 import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
+import {useTranslation} from "react-i18next";
 
 function App() {
+  const {t} = useTranslation();
   const {toast} = useToast();
   const [currentScreen, setCurrentScreen] = useState<AppScreenEnum>(AppScreenEnum.Home);
 
@@ -35,7 +37,7 @@ function App() {
           navigateTo(AppScreenEnum.Speech)
         }).catch(error => {
           const backendError = (error as AxiosError<BackendError>).response?.data;
-          const errorMessage = ErrorMessageService.getErrorMessage(backendError);
+          const errorMessage = ErrorMessageService.getErrorMessage(t, backendError);
           displayToast(errorMessage);
           navigateTo(AppScreenEnum.Login)
         })

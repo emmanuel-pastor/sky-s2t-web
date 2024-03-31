@@ -9,8 +9,10 @@ import ApiService from "@/lib/ApiService.ts";
 import ErrorMessageService from "@/lib/ErrorMessageService.ts";
 import {BackendErrorCodeEnum} from "@/models/BackendErrorCode.enum.ts";
 import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
+import {useTranslation} from "react-i18next";
 
 function LoginScreen() {
+  const {t} = useTranslation();
   const {navigateTo, displayToast} = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +26,7 @@ function LoginScreen() {
       navigateTo(AppScreenEnum.Speech);
     }).catch(error => {
       const backendError = (error as AxiosError<BackendError>).response?.data;
-      const errorMessage = ErrorMessageService.getErrorMessage(backendError);
+      const errorMessage = ErrorMessageService.getErrorMessage(t, backendError);
       displayToast(errorMessage);
     }).finally(() => {
       setIsLoading(false);
@@ -36,7 +38,7 @@ function LoginScreen() {
       code: BackendErrorCodeEnum.OTHER,
       message: "Google login failed."
     }
-    const errorMessage = ErrorMessageService.getErrorMessage(backendError);
+    const errorMessage = ErrorMessageService.getErrorMessage(t, backendError);
     displayToast(errorMessage)
   }
 

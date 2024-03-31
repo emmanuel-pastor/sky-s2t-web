@@ -1,0 +1,10 @@
+{
+  "start": "Start",
+  "stop": "Stop",
+  "listening": "Listening...",
+  "backendError": {
+    "default": "Something went wrong. Please try again later.",
+    "invalidHostedDomain": "Please log in with your Skyincap account",
+    "userAccessRevoked": "Your access has been revoked. Please contact your administrator."
+  }
+}
