@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/sky-s2t-web/sw.js', { scope: '/sky-s2t-web/' })})}
