@@ -46,6 +46,7 @@ class SpeechRecognition {
     phraseListGrammar.addPhrase("Sharik");
     phraseListGrammar.addPhrase("Playwright");
     phraseListGrammar.addPhrase("la doc");
+    phraseListGrammar.addPhrase("Chat GPT");
 
     this.speechRecognizer.recognizing = (_s, e) => {
       const text = e.result.text;
