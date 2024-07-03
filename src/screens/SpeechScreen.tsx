@@ -88,7 +88,7 @@ function SpeechScreen() {
       <div className="fixed bottom-0 inset-x-0 flex flex-col h-full w-full">
         <div
           ref={displayTextRef}
-          className="flex-grow m-auto w-full p-2 text-3xl text-left leading-snug max-w-6xl overflow-auto">
+          className="flex-grow m-auto w-full p-2 text-4xl text-left leading-snug max-w-6xl overflow-auto">
           {displayText}
         </div>
         <div className="flex items-center justify-center py-4 border-t-2 border-gray-500">
