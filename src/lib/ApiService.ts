@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenResponse from "@/models/TokenResponse.ts";
 import Token from "@/models/Token.ts";
 
-const baseUrl = 'https://sky-s2t-auth.azurewebsites.net/api';
+const baseUrl = 'https://skyincap-sky-s2t-auth.azurewebsites.net/api';
 const client = axios.create({
   baseURL: baseUrl,
   headers: {
