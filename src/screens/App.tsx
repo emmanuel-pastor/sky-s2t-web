@@ -29,7 +29,7 @@ function App() {
       navigateTo(AppScreenEnum.Speech)
     } else {
       if (refreshToken && !refreshToken.isExpired) {
-        ApiService.refreshToken(refreshToken).then(response => {
+        ApiService.refreshToken(refreshToken.toString()).then(response => {
           const newAccessToken = new Token(response.accessToken)
           newAccessToken.storeInCookie('accessToken')
           const newRefreshToken = new Token(response.refreshToken)

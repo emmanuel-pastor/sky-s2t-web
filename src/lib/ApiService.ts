@@ -1,6 +1,5 @@
 import axios from "axios";
 import TokenResponse from "@/models/TokenResponse.ts";
-import Token from "@/models/Token.ts";
 
 const baseUrl = 'https://skyincap-sky-s2t-auth.azurewebsites.net/api';
 const client = axios.create({
@@ -29,10 +28,10 @@ export default class ApiService {
     return response.data;
   }
 
-  static async refreshToken(refreshToken: Token): Promise<TokenResponse> {
+  static async refreshToken(refreshToken: string): Promise<TokenResponse> {
     const response = await client.post<TokenResponse>(ApiRoutes.REFRESH_TOKEN, {}, {
       headers: {
-        'Authorization': `Bearer ${refreshToken.toString()}`
+        'Authorization': `Bearer ${refreshToken}`
       }
     });
 
