@@ -2,11 +2,13 @@ import {jwtDecode, JwtPayload} from "jwt-decode";
 import Cookies from "js-cookie";
 
 class Token {
+  private static cookiePrefix = '__Host-';
+
   constructor(private token: string) {
   }
 
   static fromCookie(cookieName: string): Token | undefined {
-    const token = Cookies.get(cookieName);
+    const token = Cookies.get(`${Token.cookiePrefix}${cookieName}`);
     if (token) {
       return new Token(token);
     }
@@ -32,7 +34,11 @@ class Token {
   }
 
   storeInCookie(cookieName: string) {
-    Cookies.set(cookieName, this.token, {secure: true, expires: this.expirationDate});
+    Cookies.set(`${Token.cookiePrefix}${cookieName}`, this.token, {
+      secure: true,
+      expires: this.expirationDate,
+      sameSite: 'Strict'
+    });
   }
 
   toString(): string {
