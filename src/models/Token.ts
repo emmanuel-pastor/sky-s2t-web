@@ -17,20 +17,20 @@ class Token {
   }
 
   get isExpired(): boolean {
-    const decodedToken = jwtDecode<JwtPayload>(this.token);
-    const expirationDate = decodedToken.exp;
-    const currentDate = Date.now() / 1000;
+    const expirationDate = this.expirationDate
+    const currentDate = new Date();
 
     if (expirationDate) {
       // Check if the token is expired or almost expired (less than 30 seconds left)
-      return currentDate >= expirationDate - 30;
+      expirationDate.setSeconds(expirationDate.getSeconds() - 30);
+      return currentDate >= expirationDate;
     }
     return false;
   }
 
   get expirationDate(): Date {
-    const decodedAccessToken = jwtDecode<JwtPayload>(this.token);
-    return new Date(decodedAccessToken.exp! * 1000);
+    const decodedToken = jwtDecode<JwtPayload>(this.token);
+    return new Date(decodedToken.exp! * 1000);
   }
 
   storeInCookie(cookieName: string) {
