@@ -2,7 +2,7 @@ import {jwtDecode, JwtPayload} from "jwt-decode";
 import Cookies from "js-cookie";
 
 class Token {
-  private static cookiePrefix = '__Host-';
+  private static cookiePrefix = import.meta.env.MODE === 'production' ? '__Host-' : '';
 
   constructor(private token: string) {
   }
